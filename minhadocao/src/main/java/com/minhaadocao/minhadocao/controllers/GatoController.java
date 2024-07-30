@@ -13,10 +13,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.minhaadocao.minhadocao.models.entities.Cachorro;
 import com.minhaadocao.minhadocao.models.entities.Gato;
 import com.minhaadocao.minhadocao.models.entities.RacaGato;
+import com.minhaadocao.minhadocao.models.entities.StatusAnimal;
 import com.minhaadocao.minhadocao.models.requestDTO.GatoRequestDTO;
 import com.minhaadocao.minhadocao.models.responseDTO.GatoResponseDTO;
 import com.minhaadocao.minhadocao.models.services.GatoService;
@@ -43,6 +46,17 @@ public class GatoController {
             return ResponseEntity.ok(gatoAtualizado);
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
+        }
+    }
+	
+	@PutMapping("/{id}/status")
+    public ResponseEntity<Gato> updateStatus(@PathVariable("id") Long id, @RequestParam("status") StatusAnimal status) {
+        
+        try {
+        	Gato gatoAtualizado = service.updateStatus(status, id);
+            return ResponseEntity.ok(gatoAtualizado);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
     }
 	
